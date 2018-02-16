@@ -46,7 +46,7 @@ public void jsonArrayToSet(JSONArray jAry, Set<String> result, String targetKey,
 
 
 
-public void jsonParseChildParent(JSONArray jAry,String subArrayKey) {
+public void jsonParseChildParent(JSONArray jAry,String subArrayKey,Boolean excludeRelationShipNode) {
 	try {
 				
 		for (int i = 0; i < jAry.length(); i++) {
@@ -55,6 +55,7 @@ public void jsonParseChildParent(JSONArray jAry,String subArrayKey) {
             boolean hasSubArray = false;
             JSONArray subArray = null;
             Record = i+1;
+            
             System.out.println("Level:"+Level+",Record:"+Record+",Data :"+jObj);
             
             if(jObj.has(subArrayKey)){
@@ -66,8 +67,10 @@ public void jsonParseChildParent(JSONArray jAry,String subArrayKey) {
             }
             
             if(hasSubArray){
+            	
+            	
             	    Level++;
-                	jsonParseChildParent(subArray,subArrayKey);
+                	jsonParseChildParent(subArray,subArrayKey,excludeRelationShipNode);
             } 
 		
 		}
@@ -108,7 +111,7 @@ public static void main( String[] args ) throws FileNotFoundException, IOExcepti
 	JSONObject jsonObj = new JSONObject(test.getFileContent());
 	JSONArray jsonArr = jsonObj.getJSONArray("members");
 	//test.jsonArrayToSet(jsonArr, result, "firstName", "familyMembers", false);
-	test.jsonParseChildParent(jsonArr, "familyMembers");
+	test.jsonParseChildParent(jsonArr, "familyMembers",true);
 	//System.out.println(result);
 }
 }
