@@ -40,7 +40,7 @@ public void jsonArrayToSet(JSONArray jAry, Set<String> result, String targetKey,
 }
 public String getFileContent () throws FileNotFoundException, IOException 
 {
-	try(BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\sumen\\git\\MyProject\\file\\input.txt"))) {
+	try(BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\smaibam\\git\\MyProject\\MyProject\\file\\input.txt"))) {
 	    StringBuilder sb = new StringBuilder();
 	    String line = br.readLine();
 
