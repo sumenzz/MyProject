@@ -9,8 +9,9 @@ import org.json.*;
 
 public class JsonParser {
 	
-	private Integer Level = 1;
-	private Integer Record = 1;
+	private Integer Level = 0;
+	private Integer Record = 0;
+	
 
 public void jsonArrayToSet(JSONArray jAry, Set<String> result, String targetKey, String subArrayKey, boolean includeNode){
     try {
@@ -44,6 +45,31 @@ public void jsonArrayToSet(JSONArray jAry, Set<String> result, String targetKey,
 }
 
 
+public MultiKeyHashMap<Integer, Integer, JSONObject> jsonGetLevelRecords(JSONArray jAry) {
+	
+	MultiKeyHashMap<Integer, Integer, JSONObject> levelHashMap= new MultiKeyHashMap();
+	Level++;
+	for (int i = 0; i < jAry.length(); i++) {
+		
+		JSONObject jObj;
+		Record++;
+		try {
+			jObj = jAry.getJSONObject(i);
+			
+			levelHashMap.put(Level, Record, jObj);
+			System.out.println("Level:"+Level+",Record:"+Record+",Data :"+jObj);
+			//System.out.println(levelHashMap.get(1, 2));
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	return levelHashMap;
+}
+
 
 
 public void jsonParseChildParent(JSONArray jAry,String subArrayKey,Boolean excludeRelationShipNode) {
@@ -68,7 +94,6 @@ public void jsonParseChildParent(JSONArray jAry,String subArrayKey,Boolean exclu
             
             if(hasSubArray){
             	
-            	
             	    Level++;
                 	jsonParseChildParent(subArray,subArrayKey,excludeRelationShipNode);
             } 
@@ -85,8 +110,8 @@ public void jsonParseChildParent(JSONArray jAry,String subArrayKey,Boolean exclu
 public String getFileContent () throws FileNotFoundException, IOException 
 {
 	
-	String FilePath="C:\\\\Users\\\\smaibam\\\\git\\\\MyProject\\\\MyProject\\\\file\\\\input.txt";
-	//String FilePath=("C:\\Users\\sumen\\git\\MyProject\\file\\input.txt");
+	//String FilePath="C:\\\\Users\\\\smaibam\\\\git\\\\MyProject\\\\MyProject\\\\file\\\\input.txt";
+	String FilePath=("C:\\Users\\sumen\\git\\MyProject\\file\\input.txt");
 	try(BufferedReader br = new BufferedReader(new FileReader(FilePath))) {
 	    StringBuilder sb = new StringBuilder();
 	    String line = br.readLine();
@@ -111,8 +136,9 @@ public static void main( String[] args ) throws FileNotFoundException, IOExcepti
 	JSONObject jsonObj = new JSONObject(test.getFileContent());
 	JSONArray jsonArr = jsonObj.getJSONArray("members");
 	//test.jsonArrayToSet(jsonArr, result, "firstName", "familyMembers", false);
-	test.jsonParseChildParent(jsonArr, "familyMembers",true);
-	//System.out.println(result);
+//	test.jsonParseChildParent(jsonArr, "familyMembers",true);
+	System.out.print(test.jsonGetLevelRecords(jsonArr).get(1,2));
+	
 }
 }
 	
