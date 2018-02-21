@@ -79,6 +79,7 @@ public void jsonParseChildParent(JSONArray jAry,String subArrayKey,Boolean exclu
 			
 			JSONObject jObj = jAry.getJSONObject(i);
             boolean hasSubArray = false;
+            
             JSONArray subArray = null;
                         
             System.out.println("Parent :"+Parent+", Child :"+(String)jObj.get("firstName")+", Data :"+jObj);
