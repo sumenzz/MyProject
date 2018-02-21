@@ -9,23 +9,31 @@
             },
             {  
                "firstName":"Steve",
-               "familyMembers": [
-               
-			               {  
-			               "firstName":"A",
-			               "familyMembers":null
-			            	}
-			            	
-               
+               "familyMembers":[  
+                  {  
+                     "firstName":"A",
+                     "familyMembers":null
+                  },
+                  {  
+                     "firstName":"B",
+                     "familyMembers":[  
+                        {  
+                           "firstName":"C",
+                           "familyMembers":null
+                        }
+                     ]
+                  }
                ]
+            },
+            {  
+               "firstName":"BillB",
+               "familyMembers":null
             }
          ]
       },
-      {
-       "firstName":"Tomba",
-        "familyMembers":null
-      
+      {  
+         "firstName":"Tomba",
+         "familyMembers":null
       }
-     
    ]
 }

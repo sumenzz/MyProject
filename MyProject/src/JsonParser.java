@@ -72,7 +72,7 @@ public MultiKeyHashMap<Integer, Integer, JSONObject> jsonGetLevelRecords(JSONArr
 
 
 
-public void jsonParseChildParent(JSONArray jAry,String subArrayKey,Boolean excludeRelationShipNode) {
+public void jsonParseChildParent(JSONArray jAry,String subArrayKey,Boolean excludeRelationShipNode,String Parent) {
 	try {
 				
 		for (int i = 0; i < jAry.length(); i++) {
@@ -80,9 +80,9 @@ public void jsonParseChildParent(JSONArray jAry,String subArrayKey,Boolean exclu
 			JSONObject jObj = jAry.getJSONObject(i);
             boolean hasSubArray = false;
             JSONArray subArray = null;
-            Record = i+1;
+                        
+            System.out.println("Parent :"+Parent+", Child :"+(String)jObj.get("firstName")+", Data :"+jObj);
             
-            System.out.println("Level:"+Level+",Record:"+Record+",Data :"+jObj);
             
             if(jObj.has(subArrayKey)){
                 Object possibleSubArray = jObj.get(subArrayKey);
@@ -93,9 +93,7 @@ public void jsonParseChildParent(JSONArray jAry,String subArrayKey,Boolean exclu
             }
             
             if(hasSubArray){
-            	
-            	    Level++;
-                	jsonParseChildParent(subArray,subArrayKey,excludeRelationShipNode);
+                    	jsonParseChildParent(subArray,subArrayKey,excludeRelationShipNode,(String)jObj.get("firstName"));
             } 
 		
 		}
@@ -136,8 +134,8 @@ public static void main( String[] args ) throws FileNotFoundException, IOExcepti
 	JSONObject jsonObj = new JSONObject(test.getFileContent());
 	JSONArray jsonArr = jsonObj.getJSONArray("members");
 	//test.jsonArrayToSet(jsonArr, result, "firstName", "familyMembers", false);
-//	test.jsonParseChildParent(jsonArr, "familyMembers",true);
-	System.out.print(test.jsonGetLevelRecords(jsonArr).get(1,2));
+	test.jsonParseChildParent(jsonArr, "familyMembers",true,null);
+	//System.out.print(test.jsonGetLevelRecords(jsonArr).get(1,2));
 	
 }
 }
