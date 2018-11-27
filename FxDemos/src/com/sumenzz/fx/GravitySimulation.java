@@ -27,6 +27,7 @@ public class GravitySimulation extends Application {
 	            public void handle(long now) {
 	                update();
 	                
+	                
 	            }
 	        };
 
