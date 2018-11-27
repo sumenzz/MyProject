@@ -12,16 +12,17 @@ import javafx.stage.Stage;
 public class GravitySimulation extends Application {
 
 	private Pane root = new Pane();
-	private Box box1 = new Box(300, 0, 40, 40, Color.BLUE);
+	private Box box1 = new Box(130, 0, 40, 40, Color.BLUE);
 	private static double gravity = .2;
 	private static double distance = 1;
+	private static double friction = 3;
 	
 	   private Parent createContent() {
-	        root.setPrefSize(500, 500);
+	    
+		   root.setPrefSize(300, 300);
+           root.getChildren().add(box1);
 
-	        root.getChildren().add(box1);
-
-	        AnimationTimer timer = new AnimationTimer() {
+           AnimationTimer timer = new AnimationTimer() {
 	            @Override
 	            public void handle(long now) {
 	                update();
@@ -53,6 +54,7 @@ public class GravitySimulation extends Application {
 	private void update () {
 		move(box1);
 		
+		
 	}
 	
 	private double newPosition(Rigidbody rb) {
@@ -60,10 +62,15 @@ public class GravitySimulation extends Application {
 		double newPosY = 0;
 		distance =+ distance + gravity;
 		
-		if (rb.getPosY() > 430) {			
+		if (rb.getTranslateY() > root.getHeight() - rb.getHeight()) {
+		
+		 distance = distance - friction;
 		 distance = -distance;
-		}
-		newPosY = rb.getPosY() + distance ;
+		 
+		} 
+		
+		
+		newPosY = rb.getTranslateY() + distance ;
 		
 		return newPosY;
 		
@@ -71,9 +78,7 @@ public class GravitySimulation extends Application {
 	
 	
 	void move(Rigidbody rb) {
-		rb.setPosY(newPosition(rb));
-		
-		
+		rb.setTranslateY(newPosition(rb));
 	}
 	
 	
@@ -96,45 +101,17 @@ public class GravitySimulation extends Application {
 
 		@Override
 		public int getMass() {
-			// 
 			return this.mass;
 		}
-
-		@Override
-		public void setPosY(double i) {
-			this.setTranslateY(i);
-			
-		}
-
-		@Override
-		public double getPosY() {
-			return this.getTranslateY();
-		}
-
-		@Override
-		public double getPosX() {
-			return this.getTranslateX();
-		}
-
-		@Override
-		public void setPosX(double i) {
-			this.setTranslateX(i);
-			
-		}
-
-		
-       
     }
-	
 	
 	public interface Rigidbody {
 	
 		void setMass(int mass);
+		void setTranslateY(double newPosition);
+		double getTranslateY();
+		double getHeight();
 		public int getMass();
-		double getPosY();
-		void setPosY(double i);
-		double getPosX();
-		void setPosX(double i);
-		
+	
 	}
 }
