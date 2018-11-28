@@ -12,10 +12,13 @@ import javafx.stage.Stage;
 public class GravitySimulation extends Application {
 
 	private Pane root = new Pane();
-	private Box box1 = new Box(130, 0, 40, 40, Color.BLUE);
-	private static double gravity = .2;
+	private RectangleRb box1 = new RectangleRb(130, 8, 40, 40, Color.BLUE);
+	private CircleRb ball = new CircleRb(100, 0, 40, Color.RED);
+	private static double gravity = 1;
 	private static double distance = 1;
-	private static double friction = 3;
+	private static double friction = 5;
+	private static double maxdistance = 300 ;
+	
 	
 	   private Parent createContent() {
 	    
@@ -26,6 +29,7 @@ public class GravitySimulation extends Application {
 	            @Override
 	            public void handle(long now) {
 	                update();
+	              
 	                
 	                
 	            }
@@ -54,24 +58,32 @@ public class GravitySimulation extends Application {
 	
 	private void update () {
 		move(box1);
-		
-		
 	}
 	
 	private double newPosition(Rigidbody rb) {
 		
 		double newPosY = 0;
-		distance =+ distance + gravity;
 		
-		if (rb.getTranslateY() > root.getHeight() - rb.getHeight()) {
-		
-		 distance = distance - friction;
-		 distance = -distance;
+		distance = distance + gravity;
+//		System.out.println(distance + "," + rb.getBoundary());
+
+		if ( root.getHeight() - rb.getBoundary() < 0   ) {
+			
+	    		distance = distance - friction;
+				distance = -distance;
+				maxdistance = Math.abs(distance);
+				
+		//		System.out.println("hit :" + distance + "," + friction + " , "+rb.getBoundary());
 		 
 		} 
 		
 		
-		newPosY = rb.getTranslateY() + distance ;
+		
+		if (maxdistance < friction || rb.getBoundary() > 300) {
+			 	newPosY = root.getHeight() - rb.getDistanceFromCenter() ;
+			} else	{
+				newPosY = rb.getPosY() + distance ;
+			}
 		
 		return newPosY;
 		
@@ -79,40 +91,8 @@ public class GravitySimulation extends Application {
 	
 	
 	void move(Rigidbody rb) {
-		rb.setTranslateY(newPosition(rb));
+		rb.setPosY(newPosition(rb));
 	}
 	
 	
-	private static class Box extends Rectangle implements  Rigidbody {
-        
-        
-		private int mass;
-		
-		Box(int x, int y, int w, int h, Color color) {
-            super(w, h, color);
-            setTranslateX(x);
-            setTranslateY(y);
-        }
-
-		@Override
-		public void setMass(int mass) {
-			this.mass = mass ;
-			
-		}
-
-		@Override
-		public int getMass() {
-			return this.mass;
-		}
-    }
-	
-	public interface Rigidbody {
-	
-		void setMass(int mass);
-		void setTranslateY(double newPosition);
-		double getTranslateY();
-		double getHeight();
-		public int getMass();
-	
-	}
 }
